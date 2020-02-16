@@ -5,14 +5,17 @@ import com.f2prateek.rx.preferences2.Preference
 import me.saket.dank.BuildConfig
 import me.saket.dank.R
 import me.saket.dank.ui.preferences.MultiOptionPreferencePopup
+import me.saket.dank.ui.preferences.ThemePreferencePopup
 import me.saket.dank.ui.preferences.TypefaceResource
 import me.saket.dank.ui.subreddit.SubmissionSwipeAction
 import me.saket.dank.ui.subreddit.uimodels.SubredditSubmissionImageStyle
+import me.saket.dank.ui.preferences.ThemePreferences
 import javax.inject.Inject
 import javax.inject.Named
 
 class LookAndFeelPreferencesConstructor @Inject constructor(
   private val typefacePref: Preference<TypefaceResource>,
+  private val themePref: Preference<ThemePreferences.Option>,
   @Named("comment_count_in_submission_list_byline") private val showCommentCountInByline: Preference<Boolean>,
   @Named("show_submission_thumbnails_on_left") private val showSubmissionThumbnailsOnLeft: Preference<Boolean>,
   @Named("show_colored_comments_tree") private val showColoredCommentsTree: Preference<Boolean>,
@@ -138,6 +141,14 @@ class LookAndFeelPreferencesConstructor @Inject constructor(
       )
     })
 
+    uiModels.add(UserPreferenceSectionHeader.UiModel.create(c.getString(R.string.userprefs_group_theme)))
+
+    uiModels.add(UserPreferenceButton.UiModel.create(
+      "Theme", c.getString(themePref.get().title)
+    ) { clickHandler, event ->
+      val builder = ThemePreferencePopup.builder(themePref)
+      clickHandler.show(builder, event.itemViewHolder())
+    })
     return uiModels
   }
 

@@ -170,6 +170,18 @@ class PreferenceGroupsScreen(context: Context, attrs: AttributeSet) :
         .showAtLocation(viewHolder.itemView, Gravity.NO_GRAVITY, showLocation)
   }
 
+  override fun show(popupBuilder: ThemePreferencePopup.Builder, viewHolder: RecyclerView.ViewHolder) {
+    val showLocation = Point(0, viewHolder.itemView.top + Views.statusBarHeight(resources))
+
+    // Align with padding.
+    val padding = resources.getDimensionPixelSize(R.dimen.userprefs_item_padding_for_preference_popups)
+    showLocation.offset(padding, padding)
+
+    popupBuilder
+        .build(context)
+        .showAtLocation(viewHolder.itemView, Gravity.NO_GRAVITY, showLocation)
+  }
+
   override fun openIntent(intent: Intent) {
     context.startActivity(intent)
   }

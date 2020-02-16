@@ -30,6 +30,7 @@ import me.saket.dank.ui.subreddit.uimodels.SubredditSubmissionImageStyle;
 import me.saket.dank.utils.DeviceInfo;
 import me.saket.dank.utils.RxPreferencesEnumListTypeAdapter;
 import me.saket.dank.utils.RxPreferencesEnumTypeAdapter;
+import me.saket.dank.ui.preferences.ThemePreferences;
 import me.saket.dank.utils.TimeInterval;
 
 @Module
@@ -122,6 +123,17 @@ public class UserPreferencesModule {
   Preference<Boolean> showColoredCommentsTreePref(@Named("user_prefs") RxSharedPreferences rxPrefs) {
     return rxPrefs.getBoolean("show_colored_comments_tree", false);
   }
+
+  @Provides
+  Preference<ThemePreferences.Option> themePref(@Named("user_prefs") RxSharedPreferences rxPrefs, Moshi moshi) {
+    return rxPrefs.getObject("theme", ThemePreferences.Option.LIGHT, new ThemePreferences.Converter(moshi));
+  }
+
+  /*@Provides       | not sure about this
+  @Named("night_mode")
+  Preference<Integer> nightModePref(@Named("user_prefs") RxSharedPreferences rxPrefs) {
+    return rxPrefs.getInteger("night_mode", ThemePreferences.Option.LIGHT.getMode());
+  }*/
 
   @Provides
   RxPreferencesEnumTypeAdapter<SubredditSubmissionImageStyle> subredditSubmissionImageStyleEnumTypeAdapter() {

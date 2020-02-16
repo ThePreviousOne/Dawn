@@ -9,6 +9,9 @@ import android.os.Build;
 import android.os.Process;
 import android.os.StrictMode;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.f2prateek.rx.preferences2.Preference;
 import com.facebook.stetho.Stetho;
 import com.gabrielittner.threetenbp.LazyThreeTen;
 import com.tspoon.traceur.Traceur;
@@ -19,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.github.inflationx.viewpump.ViewPump;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,6 +32,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import me.saket.dank.di.Dank;
+import me.saket.dank.ui.preferences.ThemePreferences;
 import timber.log.Timber;
 
 public class DankApplication extends Application {
@@ -37,9 +43,12 @@ public class DankApplication extends Application {
   @SuppressWarnings("FieldCanBeLocal")
   private final CompositeDisposable referenceHolders = new CompositeDisposable();
 
+  @Inject Preference<ThemePreferences.Option> themePref;
+
   @Override
   public void onCreate() {
     super.onCreate();
+
 
     Dank.initDependencies(this);
     RxJavaPlugins.setErrorHandler(undeliveredExceptionsHandler());
@@ -78,6 +87,13 @@ public class DankApplication extends Application {
     Observable<Long> initialDelayStream = Observable.timer(5, TimeUnit.SECONDS, Schedulers.io())
         .replay()
         .refCount();
+
+    Dank.dependencyInjector().themePreferences()
+        .getPreferenceChange().subscribe(option -> {
+            setTheme(option.getTheme());
+            AppCompatDelegate.setDefaultNightMode(option.getMode());
+        }
+    );
 
     referenceHolders.add(
         Dank.dependencyInjector().userAuthListener()

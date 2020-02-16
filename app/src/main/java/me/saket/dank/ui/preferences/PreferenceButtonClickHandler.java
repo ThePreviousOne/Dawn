@@ -13,6 +13,8 @@ public interface PreferenceButtonClickHandler {
 
   void show(MultiOptionPreferencePopup.Builder popupBuilder, RecyclerView.ViewHolder viewHolder);
 
+  void show(ThemePreferencePopup.Builder popupBuilder, RecyclerView.ViewHolder viewHolder);
+
   void openIntent(Intent intent);
 
   void openLink(Link link);
