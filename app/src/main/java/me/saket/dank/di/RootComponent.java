@@ -50,6 +50,7 @@ import me.saket.dank.ui.user.messages.InboxActivity;
 import me.saket.dank.ui.user.messages.InboxFolderFragment;
 import me.saket.dank.ui.user.messages.PrivateMessageThreadActivity;
 import me.saket.dank.utils.NestedOptionsPopupMenu;
+import me.saket.dank.ui.preferences.ThemePreferences;
 import me.saket.dank.utils.markdown.MarkdownModule;
 import me.saket.dank.vote.VoteJobService;
 import me.saket.dank.vote.VotingManager;
@@ -86,6 +87,8 @@ public interface RootComponent {
   TypefaceInflationInterceptor typefaceInflationInterceptor();
 
   CrashReporter crashReporter();
+
+  ThemePreferences themePreferences();
 
   void inject(MediaAlbumViewerActivity target);
 
@@ -162,4 +165,6 @@ public interface RootComponent {
   void inject(SubmissionSwipeActionPreferenceChoicePopup target);
 
   void inject(IndentedLayout target);
+
+  void inject(ThemePreferences target);
 }
